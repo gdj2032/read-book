@@ -1,44 +1,57 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# 页面基础框架 目录结构及存放规则
+#### constants
+  + appInfo.tsx `网站名, LOGO等信息`
+  + api.tsx `API_HOST` 等信息
+#### styles `全局Style`
+#### images `图片资源`
+#### service `所有服务的代码`
+  + 服务的代码必须按照服务的业务逻辑进行归类并存放到不同文件中。
+  + 文件名规则 {服务类名}.service.tsx， 里面所有类型通过普通导出进行导出， 服务方法 打包成对象进行default导出， 参考user.service.tsx
+  + 新增服务之后要到 index.tsx中进行导出.`外部代码都从 service/index.tsx导入服务和类型。`
+#### components `全局组件都分目录存放在此目录下， 每个组件目录参考单页面目录结构`
+#### pages `存放所有的用户页面`
+#### 全局常量访问
++ ###### REDUX
+  + redux store: `全局Redux的Store是 reduxes目录的默认导出`
+  ```tsx
+  import Store from '@/reduxes'
+  ```
+  + redux 中定义的Type, Action 都已经从 reduxes中按照redux分组导出,只需要导入使用即可
+    ```tsx
+    import {xxxRedux} from '@/reduxes'
+    类型： const varible : xxxRedux.TypeXXX = ...; //类型
+    xxxRedux.xxxAction....(); // Action
+    ```
+#### pages `存放所有的用户页面`
 
-## Available Scripts
++ 多页面组结构如下 `比如列表，详情，编辑等都在一个组里面, 根目录下不要有index.tsx`
+  > + 页面组目录/ 
+  >   + components/ `该页面组下公共组件目录`
+  >   + 子页面目录
+  >     + index.tsx `子页面代码`  
+  >     + style/ | index.scss ` 如果有多个样式表样式表需要放到style目录下，否则使用index.scss, 切忌把一堆scss和tsx写到同一个目录！`
+  >     + 其他页面.tsx `某一个页面自己单独的组件无需创建component目录` 
 
-In the project directory, you can run:
++ 单页面组下面无需再细分子页面目录，直接使用 `多页面组中子页面目录结构即可`
+  > + 页面目录/
+  >   + index.tsx `子页面代码`  
+  >   + style/ | index.scss ` 如果有多个样式表样式表需要放到style目录下，否则使用index.scss, 切忌把一堆scss和tsx写到同一个目录！`
+  >   + 其他页面.tsx `某一个页面自己单独的组件无需创建component目录` 
 
-### `yarn start`
++ 新增的页面需要修改 /pages/index.tsx中导出代码 （以后考虑自动生成导出代码）
+  + 导入页面组件
+  + `pagesPathes` 中定义页面路径变量，此变量可以通过 `import { PathConfig} from '@/constants'`来获取
+  + `pagesRoutes` 设置页面路由
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
++ ###### Service
+  + 服务：服务已经按照分类导出
+  ```tsx
+  import {xxxServices} from '@/service'
+  await xxxService.xxxFunc();
+  ```
++ ###### 页面路径 `所有页面路径只要按照以上新建页面的步骤，都可以通过constants中导入得到`
+  ```tsx
+  import {PathConfig} from '@/constants'
+  const HomePath = `PathConfig.xxxx`
+  ```
++ ###### API_HOST, APPNAME, LOGO都可以从constants中导入得到
