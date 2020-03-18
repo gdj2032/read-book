@@ -12,11 +12,11 @@ interface Props {
 
 class ContainerPage extends React.Component<Props> {
 
-	render() {
-		const childRouteConfig = this.props.routeConfig.children || [];
-		return (
-			<div className="g-container">
-        <div className="p-header">
+  render() {
+    const childRouteConfig = this.props.routeConfig.children || [];
+    return (
+      <div className="g-container">
+        {/* <div className="p-header">
           <Header history={this.props.history}/>
         </div>
         <div className="p-content">
@@ -28,10 +28,13 @@ class ContainerPage extends React.Component<Props> {
               {routeList(childRouteConfig)}
             </Switch>
           </div>
-        </div>
+        </div> */}
+        <Switch>
+          {routeList(childRouteConfig)}
+        </Switch>
       </div>
-		);
-	}
+    );
+  }
 }
 
 export default withRouter(ContainerPage as any);
